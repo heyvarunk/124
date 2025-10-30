@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Product Dashboard</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for aesthetic appeal and responsiveness */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+        }
+        .section-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 5px solid;
+            border-radius: 0.75rem; /* Ensure rounded corners */
+        }
+        .section-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+        }
+        /* Color mapping for sections - Blue, Emerald, Amber, Red, Violet */
+        #system-identity-card { border-left-color: #3b82f6; } 
+        #hardware-components-card, #design-specifications-card { border-left-color: #10b981; } 
+        #modeling-and-design-card, #modeling-and-cfd-card { border-left-color: #f59e0b; } 
+        #control-software-card, #ai-optimization-card { border-left-color: #ef4444; } 
+        #key-performance-indicators-card { border-left-color: #8b5cf6; } 
+
+        /* Custom utility for code-like key-value presentation */
+        .key-value-pair {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .key-value-pair:last-child {
+            border-bottom: none;
+        }
+        .key {
+            font-weight: 500;
+            color: #4b5563;
+        }
+        .value {
+            font-family: monospace;
+            color: #1f2937;
+            font-weight: 600;
+        }
+        .product-button {
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 9999px; /* Pill shape */
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .product-button:not(.active) {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+        .product-button.active {
+            background-color: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.5);
+            border-color: #1d4ed8;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-6 bg-white p-6 rounded-xl shadow-lg">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
+            Technical Product Dashboard
+        </h1>
+        <p class="text-xl text-gray-600">
+            Compare and view specifications for high-precision engineering systems.
+        </p>
+    </header>
+
+    <!-- Product Selector Buttons -->
+    <div id="product-selector" class="max-w-6xl mx-auto mb-8 flex flex-wrap gap-4 justify-center">
+        <!-- Buttons will be generated here by JavaScript -->
+    </div>
+
+    <!-- Main Content Grid -->
+    <main id="app-container" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></main>
+
+    <!-- JavaScript for Data Handling and Rendering -->
+    <script>
+        // --- DATA STRUCTURE FOR ALL PRODUCTS ---
+        const productsData = {
+            "SmartValve": {
+                "SYSTEM_IDENTITY": {
+                    "product_name": "SmartValve™",
+                    "version": "1.0-ALPHA",
+                    "primary_function": "Precision_Flow_Regulation",
+                    "regulation_type": "Self-Regulating (Autonomous Feedback Loop)"
+                },
+                "HARDWARE_COMPONENTS": {
+                    "valve_mechanism": {
+                        "type": "Micro-Stepped Actuated Ball Valve",
+                        "material": "Stainless Steel (corrosion resistant)",
+                        "pressure_rating_psi": 1500,
+                        "flow_coefficient_range_kv": "0.1 to 10.0"
+                    },
+                    "actuator": {
+                        "type": "High-Resolution Stepper Motor",
+                        "resolution_steps_per_turn": 2048,
+                        "positional_accuracy_degrees": 0.088,
+                        "interface": "Ethernet/IP"
+                    },
+                    "sensors": [
+                        { "id": "FLOW_SENSOR_01", "parameter": "Mass_Flow_Rate", "technology": "Coriolis or Ultrasonic", "accuracy_percent": "± 0.15", "data_rate_hz": 50 },
+                        { "id": "PRESSURE_SENSOR_INLET", "parameter": "Inlet_Pressure", "accuracy_percent": "± 0.05" },
+                        { "id": "TEMPERATURE_SENSOR", "parameter": "Fluid_Temperature", "location": "Post-Valve" }
+                    ]
+                },
+                "MODELING_AND_DESIGN": {
+                    "design_methodology": "Model-Based Design Optimization",
+                    "cfd_model_details": {
+                        "software": "OpenFOAM / ANSYS Fluent",
+                        "analysis_type": "Transient, Incompressible/Compressible Flow",
+                        "objective": "Minimize cavitation and pressure drop; Optimize C_v vs. Position curve",
+                        "mesh_resolution_elements": "Min 5 million elements",
+                        "validation_metric": "Predicted vs. Actual C_v < 1% error"
+                    },
+                    "data_link": "CFD simulation data is used to train initial AI model weights."
+                },
+                "CONTROL_SOFTWARE": {
+                    "controller_name": "Gemini-Flow-Control-Unit",
+                    "control_architecture": "Hybrid Model Predictive Control (MPC)",
+                    "ai_logic_model": {
+                        "type": "Recurrent Neural Network (RNN) / LSTM",
+                        "input_features": ["Current Flow", "Target Flow", "Inlet Pressure", "Temperature", "Valve Position (t-1)"],
+                        "output_action": "Actuator Step Command (Forward/Reverse)",
+                        "training_data_source": "Simulated CFD output + Historical operational data",
+                        "goal": "Achieve SETPOINT within 50ms, with 0% steady-state error"
+                    },
+                    "safety_protocol": {
+                        "mode": "Fail-Safe",
+                        "action_on_sensor_failure": "Set valve to default open (50%) position; Trigger high-priority alert."
+                    }
+                },
+                "KEY_PERFORMANCE_INDICATORS": {
+                    "precision_flow_control": {
+                        "target_accuracy_percent": "± 0.2",
+                        "metric": "Standard Deviation from Flow Setpoint"
+                    },
+                    "response_time_ms": {
+                        "target": 50,
+                        "metric": "Time to settle within 1% of new Setpoint"
+                    },
+                    "energy_efficiency_rating": "A++",
+                    "predictive_maintenance": "AI tracks actuation torque variance to predict mechanical wear."
+                }
+            },
+            "AeroLite": {
+                "SYSTEM_IDENTITY": {
+                    "product_name": "AeroLite™",
+                    "version": "2.1-OPTIMUS",
+                    "primary_function": "UAV Propeller Optimization",
+                    "regulation_type": "Static (Pre-Trained Geometry)"
+                },
+                "DESIGN_SPECIFICATIONS": {
+                    "propeller_type": "Multi-rotor (Fixed Pitch)",
+                    "material": "Carbon Fiber Composite (CFRP)",
+                    "diameter_range_inches": "10 - 30",
+                    "pitch_profile": "AI-Generated Variable Helix",
+                    "weight_reduction_percent": "20% vs Standard CF",
+                    "noise_reduction_dBA": "Up to 5"
+                },
+                "MODELING_AND_CFD": {
+                    "design_methodology": "Generative Design via Genetic Algorithms",
+                    "cfd_model_details": {
+                        "software": "SU2 / NASA Fun3D",
+                        "analysis_type": "Steady-State Incompressible Flow (Hover/Forward Flight)",
+                        "objective": "Maximize Thrust-to-Power Ratio (T/P)",
+                        "validation_metric": "Thrust-to-Power > 10.5 N/W"
+                    },
+                    "data_link": "CFD outputs define the fitness function for the AI model."
+                },
+                "AI_OPTIMIZATION": {
+                    "model_name": "SkyNet-Rotor-V2",
+                    "algorithm": "Deep Reinforcement Learning (DRL)",
+                    "optimization_space": "Blade Chord, Twist, Airfoil Profile (20,000+ variables)",
+                    "output": "STL Geometry files for 3D machining",
+                    "goal": "Achieve 15% increase in flight efficiency over stock propellers."
+                },
+                "KEY_PERFORMANCE_INDICATORS": {
+                    "efficiency_gain_percent": {
+                        "target": "15%",
+                        "metric": "Hover time increase at max payload"
+                    },
+                    "thrust_output_newtons": {
+                        "target": "Max 500 N @ 8000 RPM",
+                        "metric": "Dynamometer Testing"
+                    },
+                    "manufacturing_tolerance_mm": "± 0.05",
+                    "certification": "FAA Part 107 compliance"
+                }
+            }
+        };
+
+        const sectionTitles = {
+            "SYSTEM_IDENTITY": "1. System Identity",
+            "HARDWARE_COMPONENTS": "2. Hardware Components",
+            "DESIGN_SPECIFICATIONS": "2. Design Specifications",
+            "MODELING_AND_DESIGN": "3. Modeling & Design (CFD)",
+            "MODELING_AND_CFD": "3. Modeling & CFD",
+            "CONTROL_SOFTWARE": "4. Control Software (AI Logic)",
+            "AI_OPTIMIZATION": "4. AI Optimization",
+            "KEY_PERFORMANCE_INDICATORS": "5. Key Performance Indicators (KPIs)"
+        };
+
+        /**
+         * Helper function to convert a key to a readable label.
+         */
+        const toTitleCase = (str) => {
+            return str.replace(/_/g, ' ')
+                      .replace(/\b\w/g, c => c.toUpperCase())
+                      .replace(/Kv/g, 'Kv') 
+                      .replace(/Cfd/g, 'CFD')
+                      .replace(/Cfrp/g, 'CFRP')
+                      .replace(/Uav/g, 'UAV')
+                      .replace(/Dba/g, 'dBA')
+                      .replace(/T P/g, 'T/P')
+                      .replace(/Rnn/g, 'RNN')
+                      .replace(/Lst M/g, 'LSTM')
+                      .replace(/Drl/g, 'DRL')
+                      .replace(/Kpis/g, 'KPIs');
+        };
+
+        /**
+         * Creates HTML for a key-value pair.
+         */
+        const renderKeyValuePair = (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+                if (Array.isArray(value)) {
+                    // Handle array of strings (e.g., input_features)
+                    if (value.every(item => typeof item === 'string')) {
+                        return `<div class="key-value-pair"><span class="key">${toTitleCase(key)}:</span> <span class="value text-xs text-right p-1 bg-gray-100 rounded">${value.join(', ')}</span></div>`;
+                    }
+                } else {
+                    // Handle nested object (e.g., valve_mechanism)
+                    return `<div class="mt-2 pt-2 border-t border-gray-200">
+                                <p class="text-sm font-bold text-gray-700">${toTitleCase(key)}:</p>
+                                <div class="pl-3 mt-1 space-y-1">${Object.entries(value).map(([k, v]) => renderKeyValuePair(k, v)).join('')}</div>
+                            </div>`;
+                }
+            }
+            return `<div class="key-value-pair"><span class="key">${toTitleCase(key)}:</span> <span class="value text-right">${value}</span></div>`;
+        };
+        
+        /**
+         * Renders the data for the currently selected product.
+         */
+        const renderDashboard = (productKey) => {
+            const container = document.getElementById('app-container');
+            container.innerHTML = ''; // Clear previous content
+            
+            const architectureData = productsData[productKey];
+            if (!architectureData) {
+                container.innerHTML = `<p class="text-center text-gray-500 col-span-full py-12">Product data not found for ${productKey}.</p>`;
+                return;
+            }
+
+            // Update button active state
+            document.querySelectorAll('.product-button').forEach(btn => {
+                if (btn.dataset.product === productKey) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Render cards
+            Object.entries(architectureData).forEach(([sectionKey, sectionData]) => {
+                const title = sectionTitles[sectionKey] || sectionKey;
+
+                let contentHtml = '';
+
+                // Iterate over the section data
+                Object.entries(sectionData).forEach(([key, value]) => {
+                    if (Array.isArray(value) && key === 'sensors') {
+                        // Special handling for the 'sensors' array (SmartValve only)
+                        contentHtml += `<div class="mt-4 pt-4 border-t border-gray-200">
+                                            <p class="text-sm font-bold text-gray-700">Sensors:</p>
+                                            <div class="space-y-3 mt-2">`;
+                        value.forEach(sensor => {
+                            contentHtml += `<div class="p-3 bg-indigo-50 rounded-lg border border-indigo-200 text-xs">
+                                                <p class="font-semibold text-indigo-800 mb-1">${sensor.id}</p>
+                                                ${Object.entries(sensor).filter(([k]) => k !== 'id').map(([k, v]) => `<div class="flex justify-between"><span class="text-gray-600">${toTitleCase(k)}:</span> <span class="font-mono text-indigo-900">${v}</span></div>`).join('')}
+                                            </div>`;
+                        });
+                        contentHtml += `</div></div>`;
+                    } else if (typeof value === 'object' && value !== null) {
+                        contentHtml += renderKeyValuePair(key, value);
+                    } else {
+                        contentHtml += renderKeyValuePair(key, value);
+                    }
+                });
+
+                // Create the card element
+                const card = document.createElement('div');
+                card.id = sectionKey.toLowerCase().replace(/_/g, '-') + '-card';
+                card.className = 'section-card bg-white p-6 rounded-xl shadow-md transition-all duration-300';
+                card.innerHTML = `
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">${title}</h2>
+                    <div class="space-y-3 text-sm">${contentHtml}</div>
+                `;
+
+                container.appendChild(card);
+            });
+        };
+
+        /**
+         * Renders the product selection buttons.
+         */
+        const renderProductSelector = () => {
+            const selectorContainer = document.getElementById('product-selector');
+            Object.keys(productsData).forEach(productKey => {
+                const button = document.createElement('button');
+                button.className = 'product-button';
+                button.textContent = productKey;
+                button.dataset.product = productKey;
+                button.addEventListener('click', () => renderDashboard(productKey));
+                selectorContainer.appendChild(button);
+            });
+        };
+
+        // Initialize dashboard on window load
+        window.onload = function() {
+            renderProductSelector();
+            // Default to SmartValve on initial load
+            renderDashboard("SmartValve");
+        }
+    </script>
+</body>
+</html>
